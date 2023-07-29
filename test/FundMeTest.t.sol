@@ -12,6 +12,7 @@ contract FundMeTest is Test {
     uint256 constant STARTING_BALANCE = 10 ether;
     // generating address using makeAddr function. it takes strings as a input
     address USER = makeAddr("user");
+    uint256 constant GAS_PRICE = 1;
 
     function setUp() external {
         // fundMe = new FundMe(0x694AA1769357215DE4FAC081bf1f309aDC325306);
@@ -77,8 +78,13 @@ contract FundMeTest is Test {
         uint256 startingFundMeBalance = address(fundMe).balance;
 
         // Act
+        uint256 gasStart = gasleft();
+        vm.txGasPrice(GAS_PRICE);
         vm.prank(fundMe.getOwner());
         fundMe.withdraw();
+        uint256 gasEnd = gasleft();
+        uint gasUsed = gasStart - gasEnd;
+        console.log(gasUsed);
 
         // Assert
         uint256 endingOwnerBalance = fundMe.getOwner().balance;
@@ -140,8 +146,13 @@ contract FundMeTest is Test {
         uint256 startingFundMeBalance = address(fundMe).balance;
 
         // Act
+        uint256 gasStart = gasleft();
+        vm.txGasPrice(GAS_PRICE);
         vm.prank(fundMe.getOwner());
         fundMe.withdraw();
+        uint256 gasEnd = gasleft();
+        uint gasUsed = gasStart - gasEnd;
+        console.log(gasUsed);
 
         // Assert
         uint256 endingOwnerBalance = fundMe.getOwner().balance;
